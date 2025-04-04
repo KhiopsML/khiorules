@@ -1,0 +1,4 @@
+Rank;Name;Type;Style;Label
+1;RuleBasedPredictor           ;boolean ;CheckBox   ;Rule Based predictor
+2;SelectiveNaiveBayesPredictor ;boolean ;CheckBox   ;Selective Naive Bayes predictor
+3;NaiveBayesPredictor          ;boolean ;CheckBox   ;Naive Bayes predictor

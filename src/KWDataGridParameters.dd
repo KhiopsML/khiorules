@@ -1,0 +1,9 @@
+Rank;Name;Type;Style;Label
+1;TimeAllowed        ;int     ;Spinner ;Time allowed for training
+2;MaxRuleNumber         ;int        ;Spinner ;Maximum number of rules to mine
+3;AddingFeatures         ;Boolean ;CheckBox   ;Adding rules as new features
+4;PassesOverDatabase         ;int        ;Spinner ;Number of passes over database for small data
+5;RuleOptimizationLoops                  ;int     ;Spinner    ;Number of optimization loops over the attributes of the rule
+6;ContinuousOptimizationLoops                  ;int     ;Spinner    ;Number of optimization loops over a continuous attribute
+7;SymbolOptimizationLoops            ;int ;Spinner   ;Number of optimization loops over a categorical attribute
+8;SubPredictor                     ;ALString;ComboBox  ;End predictor

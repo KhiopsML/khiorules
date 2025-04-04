@@ -1,0 +1,4 @@
+Rank;Name;Type;Style;Label
+1;TimeAllowed        ;int     ;Spinner ;Time allowed for training
+2;MaxRuleNumber         ;int        ;Spinner ;Maximum number of rules to mine
+3;PassesOverDatabase         ;int        ;Spinner ;Number of passes over database for small data
