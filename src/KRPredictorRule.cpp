@@ -185,33 +185,33 @@ void KRPredictorRule::UpdateRuleClass(KWClass* ruleClass, KRRule* rule, int rule
 				andRule->GetOperandAt(andRule->GetOperandNumber() - 1)->SetDerivationRule(leRule);
 			}
 			else //krrAttribute->GetBodyPartIndex() == 1
-			    if (krrAttribute->GetPartNumber() == 2)
-			{
-				gRule = new KWDRG;
-				gRule->GetFirstOperand()->SetOrigin(KWDerivationRuleOperand::OriginAttribute);
-				gRule->GetFirstOperand()->SetAttributeName(krrAttribute->GetAttributeName());
-				gRule->GetSecondOperand()->SetOrigin(KWDerivationRuleOperand::OriginConstant);
-				gRule->GetSecondOperand()->SetContinuousConstant(krrAttribute->GetPartAt(1)->GetInterval()->GetLowerBound());
-				andRule->AddOperand(andOperandTemplate->Clone());
-				andRule->GetOperandAt(andRule->GetOperandNumber() - 1)->SetDerivationRule(gRule);
-			}
-			else //krrAttribute->GetPartNumber() == 3
-			{
-				leRule = new KWDRLE;
-				leRule->GetFirstOperand()->SetOrigin(KWDerivationRuleOperand::OriginAttribute);
-				leRule->GetFirstOperand()->SetAttributeName(krrAttribute->GetAttributeName());
-				leRule->GetSecondOperand()->SetOrigin(KWDerivationRuleOperand::OriginConstant);
-				leRule->GetSecondOperand()->SetContinuousConstant(krrAttribute->GetPartAt(1)->GetInterval()->GetUpperBound());
-				gRule = new KWDRG;
-				gRule->GetFirstOperand()->SetOrigin(KWDerivationRuleOperand::OriginAttribute);
-				gRule->GetFirstOperand()->SetAttributeName(krrAttribute->GetAttributeName());
-				gRule->GetSecondOperand()->SetOrigin(KWDerivationRuleOperand::OriginConstant);
-				gRule->GetSecondOperand()->SetContinuousConstant(krrAttribute->GetPartAt(1)->GetInterval()->GetLowerBound());
-				andRule->AddOperand(andOperandTemplate->Clone());
-				andRule->GetOperandAt(andRule->GetOperandNumber() - 1)->SetDerivationRule(gRule);
-				andRule->AddOperand(andOperandTemplate->Clone());
-				andRule->GetOperandAt(andRule->GetOperandNumber() - 1)->SetDerivationRule(leRule);
-			}
+				if (krrAttribute->GetPartNumber() == 2)
+				{
+					gRule = new KWDRG;
+					gRule->GetFirstOperand()->SetOrigin(KWDerivationRuleOperand::OriginAttribute);
+					gRule->GetFirstOperand()->SetAttributeName(krrAttribute->GetAttributeName());
+					gRule->GetSecondOperand()->SetOrigin(KWDerivationRuleOperand::OriginConstant);
+					gRule->GetSecondOperand()->SetContinuousConstant(krrAttribute->GetPartAt(1)->GetInterval()->GetLowerBound());
+					andRule->AddOperand(andOperandTemplate->Clone());
+					andRule->GetOperandAt(andRule->GetOperandNumber() - 1)->SetDerivationRule(gRule);
+				}
+				else //krrAttribute->GetPartNumber() == 3
+				{
+					leRule = new KWDRLE;
+					leRule->GetFirstOperand()->SetOrigin(KWDerivationRuleOperand::OriginAttribute);
+					leRule->GetFirstOperand()->SetAttributeName(krrAttribute->GetAttributeName());
+					leRule->GetSecondOperand()->SetOrigin(KWDerivationRuleOperand::OriginConstant);
+					leRule->GetSecondOperand()->SetContinuousConstant(krrAttribute->GetPartAt(1)->GetInterval()->GetUpperBound());
+					gRule = new KWDRG;
+					gRule->GetFirstOperand()->SetOrigin(KWDerivationRuleOperand::OriginAttribute);
+					gRule->GetFirstOperand()->SetAttributeName(krrAttribute->GetAttributeName());
+					gRule->GetSecondOperand()->SetOrigin(KWDerivationRuleOperand::OriginConstant);
+					gRule->GetSecondOperand()->SetContinuousConstant(krrAttribute->GetPartAt(1)->GetInterval()->GetLowerBound());
+					andRule->AddOperand(andOperandTemplate->Clone());
+					andRule->GetOperandAt(andRule->GetOperandNumber() - 1)->SetDerivationRule(gRule);
+					andRule->AddOperand(andOperandTemplate->Clone());
+					andRule->GetOperandAt(andRule->GetOperandNumber() - 1)->SetDerivationRule(leRule);
+				}
 		} // Fin attribut numerique
 
 		// Attribut symbolique
@@ -360,9 +360,9 @@ boolean KRPredictorRule::InternalTrain()
 			cout << "Not IsTrained\n";
 		if (not((predictorReport == NULL and trainedPredictor == NULL) or (predictorReport != NULL and trainedPredictor != NULL)))
 			cout << "bug1\n"
-			     << "predictor report : \n"
-			     << predictorReport << "\ntrained predictor : \n"
-			     << trainedPredictor << endl;
+			<< "predictor report : \n"
+			<< predictorReport << "\ntrained predictor : \n"
+			<< trainedPredictor << endl;
 		if (not((predictorReport == NULL and trainedPredictor == NULL) or trainedPredictor->GetTargetType() == GetTargetAttributeType()))
 			cout << "bug2\n";
 		if (not((predictorReport == NULL and trainedPredictor == NULL) or trainedPredictor->Check()))
@@ -398,10 +398,10 @@ void KRPredictorRule::InternalTrainPredictorFromRuleClass(KWClass* ruleClass)
 	// Creation d'un predicteur "sous-traitant"
 	subPredictor = NULL;
 	assert(GetRuleParameters()->GetSubPredictor() == "SNB" or
-	       GetRuleParameters()->GetSubPredictor() == "NB" or
-	       GetRuleParameters()->GetSubPredictor() == "BU");
+		GetRuleParameters()->GetSubPredictor() == "NB" or
+		GetRuleParameters()->GetSubPredictor() == "BU");
 	if (GetRuleParameters()->GetSubPredictor() == "SNB")
-		subPredictor = new SNBPredictorSelectiveNaiveBayes; //DDD MB
+		subPredictor = new SNBPredictorSelectiveNaiveBayes;
 	else if (GetRuleParameters()->GetSubPredictor() == "NB")
 		subPredictor = new KWPredictorNaiveBayes;
 	else if (GetRuleParameters()->GetSubPredictor() == "BU")
@@ -419,10 +419,11 @@ void KRPredictorRule::InternalTrainPredictorFromRuleClass(KWClass* ruleClass)
 
 	// Apprentissage des stats pour classe de regles
 	subClassStats.SetLearningSpec(&subLearningSpec);
+	subClassStats.SetAttributePairsSpec(classStats->GetAttributePairsSpec());
 	subClassStats.ComputeStats();
 
-	//DEBUG
-	//DDD MB subClassStats.WriteReportFile("RuleClassStats.xls");
+	// DEBUG
+	// subClassStats.WriteReportFile("RuleClassStats.xls");
 
 	// Parametrage du predicteur
 	subPredictor->SetLearningSpec(&subLearningSpec);

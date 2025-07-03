@@ -7,11 +7,11 @@
 KRLearningProblemView::KRLearningProblemView()
 {
 	KRAnalysisSpecView* analysisSpecView;
-	const ALString sAnalysisSpecIdentifier="AnalysisSpec";
+	const ALString sAnalysisSpecIdentifier = "AnalysisSpec";
 
 	// Specialisation de la fiche des parametres d'analyse,
 	// en remplacant l'ancienne version par une sous-classe
-    analysisSpecView = new KRAnalysisSpecView;
+	analysisSpecView = new KRAnalysisSpecView;
 	ReplaceCardField(sAnalysisSpecIdentifier, analysisSpecView);
 
 	// Parametrage de liste d'aide pour le nom de l'attribut cible
@@ -25,15 +25,15 @@ KRLearningProblemView::KRLearningProblemView()
 		"Modalities:Value");
 
 	// Fonctionnalites avancees, disponible uniquement pour l'auteur
-    //if (GetLearningExpertMode())
-    {
+	//if (GetLearningExpertMode())
+	{
 		AddCardField("LearningProblemStudy", "Benchmark",
 			new KRLearningProblemExtendedActionView);
-    }
+	}
 
 	// Libelles
-    SetIdentifier("KRLearningProblem");
-    SetLabel("Rule-Based Classifier");
+	SetIdentifier("KRLearningProblem");
+	SetLabel("Rule-Based Classifier");
 }
 
 
@@ -44,37 +44,37 @@ KRLearningProblemView::~KRLearningProblemView()
 
 void KRLearningProblemView::ClassifierBenchmark()
 {
-    KWLearningBenchmark* classifierBenchmark;
-    KWLearningBenchmarkView view;
+	KWLearningBenchmark* classifierBenchmark;
+	KWLearningBenchmarkView view;
 
-    // Acces au parametrage du benchmark
-    classifierBenchmark = GetMyLearningProblem()->GetClassifierBenchmark();
+	// Acces au parametrage du benchmark
+	classifierBenchmark = GetMyLearningProblem()->GetClassifierBenchmark();
 	assert(classifierBenchmark->GetTargetAttributeType() == KWType::Symbol);
 
-    // Ouverture de la fenetre
-    view.SetObject(classifierBenchmark);
-    view.Open();
+	// Ouverture de la fenetre
+	view.SetObject(classifierBenchmark);
+	view.Open();
 }
 
 
 void KRLearningProblemView::RegressorBenchmark()
 {
-    KWLearningBenchmark* regressorBenchmark;
-    KWLearningBenchmarkView view;
+	KWLearningBenchmark* regressorBenchmark;
+	KWLearningBenchmarkView view;
 
-    // Acces au parametrage du benchmark
-    regressorBenchmark = GetMyLearningProblem()->GetRegressorBenchmark();
+	// Acces au parametrage du benchmark
+	regressorBenchmark = GetMyLearningProblem()->GetRegressorBenchmark();
 	assert(regressorBenchmark->GetTargetAttributeType() == KWType::Continuous);
 
-    // Ouverture de la fenetre
-    view.SetObject(regressorBenchmark);
-    view.Open();
+	// Ouverture de la fenetre
+	view.SetObject(regressorBenchmark);
+	view.Open();
 }
 
 
 void KRLearningProblemView::SetObject(Object* object)
 {
-    KRLearningProblem* learningProblem;
+	KRLearningProblem* learningProblem;
 
 	require(object != NULL);
 
@@ -84,18 +84,18 @@ void KRLearningProblemView::SetObject(Object* object)
 	// Acces a l'objet edite
 	learningProblem = cast(KRLearningProblem*, object);
 
-    // Fonctionnalites avancees, disponible uniquement pour l'auteur
-    //if (GetLearningExpertMode())
-    {
+	// Fonctionnalites avancees, disponible uniquement pour l'auteur
+	//if (GetLearningExpertMode())
+	{
 		cast(KRLearningProblemExtendedActionView*, GetFieldAt("LearningProblemStudy"))->
 			SetObject(learningProblem);
-    }
+	}
 }
 
 
 KRLearningProblem* KRLearningProblemView::GetMyLearningProblem()
 {
-    return cast(KRLearningProblem*, objValue);
+	return cast(KRLearningProblem*, objValue);
 }
 
 
@@ -105,8 +105,8 @@ KRLearningProblem* KRLearningProblemView::GetMyLearningProblem()
 KRLearningProblemExtendedActionView::KRLearningProblemExtendedActionView()
 {
 	// Libelles
-    SetIdentifier("KRLearningExtendedProblemAction");
-    SetLabel("Study");
+	SetIdentifier("KRLearningExtendedProblemAction");
+	SetLabel("Study");
 
 	// Benchmarks
 	AddAction("ClassifierBenchmark", "Evaluate classifiers...",
@@ -123,21 +123,21 @@ KRLearningProblemExtendedActionView::~KRLearningProblemExtendedActionView()
 
 void KRLearningProblemExtendedActionView::EventUpdate(Object* object)
 {
-    KRLearningProblem* editedObject;
+	KRLearningProblem* editedObject;
 
-    require(object != NULL);
+	require(object != NULL);
 
-    editedObject = cast(KRLearningProblem*, object);
+	editedObject = cast(KRLearningProblem*, object);
 }
 
 
 void KRLearningProblemExtendedActionView::EventRefresh(Object* object)
 {
-    KRLearningProblem* editedObject;
+	KRLearningProblem* editedObject;
 
-    require(object != NULL);
+	require(object != NULL);
 
-    editedObject = cast(KRLearningProblem*, object);
+	editedObject = cast(KRLearningProblem*, object);
 }
 
 
@@ -155,17 +155,17 @@ void KRLearningProblemExtendedActionView::RegressorBenchmark()
 
 KRLearningProblem* KRLearningProblemExtendedActionView::GetMyLearningProblem()
 {
-    require(objValue != NULL);
+	require(objValue != NULL);
 
-    return cast(KRLearningProblem*, objValue);
+	return cast(KRLearningProblem*, objValue);
 }
 
 
 KRLearningProblemView* KRLearningProblemExtendedActionView::GetMyLearningProblemView()
 {
-    require(GetParent() != NULL);
+	require(GetParent() != NULL);
 
-    return cast(KRLearningProblemView*, GetParent());
+	return cast(KRLearningProblemView*, GetParent());
 }
 
 
@@ -176,11 +176,11 @@ KRAnalysisSpecView::KRAnalysisSpecView()
 {
 
 	KRModelingSpecView* modelingSpecView;
-	const ALString sModelingSpecIdentifier="ModelingSpec";
+	const ALString sModelingSpecIdentifier = "PredictorsSpec";
 
 	// Specialisation de la fiche des parametres de modelisation,
 	// en remplacant l'ancienne version par une sous-classe
-    modelingSpecView = new KRModelingSpecView;
+	modelingSpecView = new KRModelingSpecView;
 	ReplaceCardField(sModelingSpecIdentifier, modelingSpecView);
 }
 

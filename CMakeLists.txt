@@ -7,7 +7,7 @@ include(FetchContent)
 FetchContent_Declare(
     khiops
     GIT_REPOSITORY "https://github.com/KhiopsML/khiops.git"
-    GIT_TAG "10.3.0")
+    GIT_TAG "11.0.0-a.0")
 
 FetchContent_MakeAvailable(khiops)
 

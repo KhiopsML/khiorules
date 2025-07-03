@@ -138,8 +138,8 @@ void KRRuleOptimizer::InitializeObjectsCounters(KWDatabase* kwdb, KRRule* rule)
 			{
 				sCurrentValue = kwoObject->GetSymbolValueAt(liKWAttributeIndex);
 				if (krrAttribute->IsInBodySymbol(sCurrentValue))
-				//if (krrAttribute->LookupSymbolPart(sCurrentValue) == krrpBodyPart)
-				// si valeur de l'attribut de l'objet n'est pas dans la partie active du corps
+					//if (krrAttribute->LookupSymbolPart(sCurrentValue) == krrpBodyPart)
+					// si valeur de l'attribut de l'objet n'est pas dans la partie active du corps
 				{
 					krocCounters.IncrementBodyCountAt(kwoObject);
 				}
@@ -194,7 +194,7 @@ boolean KRRuleOptimizer::CheckObjectCounters(KWDatabase* kwdb, KRRule* rule)
 			{
 				sCurrentValue = kwoObject->GetSymbolValueAt(liKWAttributeIndex);
 				if (krrAttribute->LookupSymbolPart(sCurrentValue) == krrpBodyPart)
-				// si valeur de l'attribut de l'objet n'est pas dans la partie active du corps
+					// si valeur de l'attribut de l'objet n'est pas dans la partie active du corps
 				{
 					nCount++;
 				}
@@ -431,9 +431,9 @@ void KRRuleOptimizer::RandomAttributeSubsetSelection(KWDatabase* kwdb, ObjectArr
 }
 
 double KRRuleOptimizer::InitializeRule(KWDatabase* kwdb,
-				       ObjectArray* oaAttributes,
-				       KWObject* kwoInBody,
-				       KRRule* krrInitRule)
+	ObjectArray* oaAttributes,
+	KWObject* kwoInBody,
+	KRRule* krrInitRule)
 {
 	int nIndex;
 	const KWClass* kwcSortClass;
@@ -452,7 +452,7 @@ double KRRuleOptimizer::InitializeRule(KWDatabase* kwdb,
 	partition = GetClassStats()->GetTargetValueStats()->GetAttributeAt(GetClassStats()->GetTargetValueStats()->GetFirstTargetAttributeIndex());
 	if (GetClassStats()->GetTargetAttributeType() == KWType::Symbol)
 		krrInitRule->Initialize(oaAttributes->GetSize(), GetClassStats()->GetTargetAttributeType(),
-					GetClassStats()->GetTargetDescriptiveStats()->GetValueNumber());
+			GetClassStats()->GetTargetDescriptiveStats()->GetValueNumber());
 	else // regression case
 		krrInitRule->Initialize(oaAttributes->GetSize(), GetClassStats()->GetTargetAttributeType(), 0);
 
@@ -462,7 +462,7 @@ double KRRuleOptimizer::InitializeRule(KWDatabase* kwdb,
 	if (GetClassStats()->GetTargetAttributeType() == KWType::Symbol)
 	{
 		GetClassStats()->GetTargetValueStats()->ExportAttributePartFrequenciesAt(GetClassStats()->GetTargetValueStats()->GetFirstTargetAttributeIndex(),
-											 &ivPartFrequencies);
+			&ivPartFrequencies);
 		/*ivPartFrequencies.Write(cout);*/
 		for (int i = 0; i < krrInitRule->GetTargetValueNumber(); i++)
 		{
@@ -474,7 +474,7 @@ double KRRuleOptimizer::InitializeRule(KWDatabase* kwdb,
 			//const KWDGSAttributePartition* partition = GetClassStats()->GetTargetValueStats()->GetAttributeAt(GetClassStats()->GetTargetValueStats()->GetFirstTargetAttributeIndex());
 			//kwdgsasvTarget = cast(KWDGSAttributeSymbolValues*, partition);
 			kwdgsasvTarget = cast(KWDGSAttributeSymbolValues*,
-					      GetClassStats()->GetTargetValueStats()->GetAttributeAt(GetClassStats()->GetTargetValueStats()->GetFirstTargetAttributeIndex()));
+				GetClassStats()->GetTargetValueStats()->GetAttributeAt(GetClassStats()->GetTargetValueStats()->GetFirstTargetAttributeIndex()));
 			//cout << "cast ok" << endl;
 			//kwdgsasvTarget->Write(cout);
 			krrInitRule->SetTargetValueAt(i, kwdgsasvTarget->GetValueAt(i));
@@ -795,7 +795,7 @@ void KRRuleOptimizer::InitAttributeValueSets(KWDatabase* database, KWObject* kwo
 
 	// Ajout de la modalite speciale dans le corps
 	//nRandomPartIndex = RandomInt(1);
-	assert(nTotalValueNumber > 1);
+	assert(nTotalValueNumber >= 1);
 	krrAttribute->GetPartAt(0)->GetValueSet()->AddValue(Symbol::GetStarValue(), 0);
 	nTotalValueNumber++;
 
@@ -841,7 +841,7 @@ void KRRuleOptimizer::UpdateSubStatistics(ObjectArray* oaWorkingInstances, KRRul
 			nObjectTargetValueIndex = krrInitRule->ComputeTargetValueIndex(sObjectTargetValue);
 			require(nObjectTargetValueIndex >= 0 and nObjectTargetValueIndex < krrInitRule->GetTargetValueNumber());
 			krrInitRule->SetInBodyTargetValueFrequencyAt(nObjectTargetValueIndex,
-								     krrInitRule->GetInBodyTargetValueFrequencyAt(nObjectTargetValueIndex) + 1);
+				krrInitRule->GetInBodyTargetValueFrequencyAt(nObjectTargetValueIndex) + 1);
 		}
 	}
 	nInformativeAttributeNumber = krrInitRule->ComputeInformativeAttributeNumber();
@@ -909,7 +909,7 @@ void KRRuleOptimizer::UpdateAllStatistics(KWDatabase* database, KRRule* krrInitR
 				sCurrentValue = kwoTempObject->GetSymbolValueAt(liAttributeIndex);
 				//if (not (krrAttribute->LookupSymbolPart(sCurrentValue) == krrpBodyPart))
 				if (not krrAttribute->IsInBodySymbol(sCurrentValue))
-				// si valeur de l'attribut de l'objet n'est pas dans la partie active du corps
+					// si valeur de l'attribut de l'objet n'est pas dans la partie active du corps
 				{
 					bCovered = false;
 					//krrAttribute->DeleteIndexingStructure();
@@ -923,7 +923,7 @@ void KRRuleOptimizer::UpdateAllStatistics(KWDatabase* database, KRRule* krrInitR
 				//if (not (krrpBodyPart->GetInterval()->GetLowerBound() < cCurrentValue
 				//		and krrpBodyPart->GetInterval()->GetUpperBound() >= cCurrentValue))
 				if (not krrAttribute->IsInBodyContinuous(cCurrentValue))
-				// si valeur de l'attribut de l'objet n'est pas dans la partie active du corps
+					// si valeur de l'attribut de l'objet n'est pas dans la partie active du corps
 				{
 					bCovered = false;
 					break;
@@ -943,7 +943,7 @@ void KRRuleOptimizer::UpdateAllStatistics(KWDatabase* database, KRRule* krrInitR
 				nObjectTargetValueIndex = krrInitRule->ComputeTargetValueIndex(sObjectTargetValue);
 				require(nObjectTargetValueIndex >= 0 and nObjectTargetValueIndex < krrInitRule->GetTargetValueNumber());
 				krrInitRule->SetInBodyTargetValueFrequencyAt(nObjectTargetValueIndex,
-									     krrInitRule->GetInBodyTargetValueFrequencyAt(nObjectTargetValueIndex) + 1);
+					krrInitRule->GetInBodyTargetValueFrequencyAt(nObjectTargetValueIndex) + 1);
 			}
 			else // regression
 			{
@@ -955,7 +955,7 @@ void KRRuleOptimizer::UpdateAllStatistics(KWDatabase* database, KRRule* krrInitR
 				nObjectTargetValueIndex = krrInitRule->ComputeContinuousTargetValuePartIndex(cObjectTargetValue);
 				require(nObjectTargetValueIndex >= 0 and nObjectTargetValueIndex < krrInitRule->GetTargetAttribute()->GetPartNumber());
 				krrInitRule->SetInBodyTargetValueFrequencyAt(nObjectTargetValueIndex,
-									     krrInitRule->GetInBodyTargetValueFrequencyAt(nObjectTargetValueIndex) + 1);
+					krrInitRule->GetInBodyTargetValueFrequencyAt(nObjectTargetValueIndex) + 1);
 			}
 		}
 
@@ -967,7 +967,7 @@ void KRRuleOptimizer::UpdateAllStatistics(KWDatabase* database, KRRule* krrInitR
 			nObjectTargetValueIndex = krrInitRule->ComputeContinuousTargetValuePartIndex(cObjectTargetValue);
 			require(nObjectTargetValueIndex >= 0 and nObjectTargetValueIndex < krrInitRule->GetTargetAttribute()->GetPartNumber());
 			krrInitRule->SetTargetValueFrequencyAt(nObjectTargetValueIndex,
-							       krrInitRule->GetTargetValueFrequencyAt(nObjectTargetValueIndex) + 1);
+				krrInitRule->GetTargetValueFrequencyAt(nObjectTargetValueIndex) + 1);
 		}
 	}
 	nInformativeAttributeNumber = krrInitRule->ComputeInformativeAttributeNumber();
@@ -1129,7 +1129,7 @@ boolean KRRuleOptimizer::IsInBody(KWObject* kwoOject, KRRule* rule)
 		if (attribute->GetAttributeTargetFunction())
 			continue;
 		if (attribute->GetAttributeType() == KWType::Continuous and
-		    not attribute->IsInBodyContinuous(kwoOject->GetContinuousValueAt(liAttributeLoadIndex)))
+			not attribute->IsInBodyContinuous(kwoOject->GetContinuousValueAt(liAttributeLoadIndex)))
 		{
 			//cout << "Attribute failed : " << attribute->GetAttributeName() << endl;
 			bOk = false;
@@ -1137,7 +1137,7 @@ boolean KRRuleOptimizer::IsInBody(KWObject* kwoOject, KRRule* rule)
 		}
 		//attribut symbolique
 		if (attribute->GetAttributeType() == KWType::Symbol and
-		    not attribute->IsInBodySymbol(kwoOject->GetSymbolValueAt(liAttributeLoadIndex)))
+			not attribute->IsInBodySymbol(kwoOject->GetSymbolValueAt(liAttributeLoadIndex)))
 		{
 			bOk = false;
 			break;
@@ -1147,9 +1147,9 @@ boolean KRRuleOptimizer::IsInBody(KWObject* kwoOject, KRRule* rule)
 }
 
 double KRRuleOptimizer::OptimizeRuleAttribute(KWDatabase* database,
-					      KRRAttribute* krrAttribute,
-					      KWObject* kwoInBody,
-					      KRRule* krrCurrentRule)
+	KRRAttribute* krrAttribute,
+	KWObject* kwoInBody,
+	KRRule* krrCurrentRule)
 {
 	require(KWType::IsSimple(krrAttribute->GetAttributeType()));
 
@@ -1167,9 +1167,9 @@ double KRRuleOptimizer::OptimizeRuleAttribute(KWDatabase* database,
 }
 
 double KRRuleOptimizer::OptimizeContinuousAttribute(KWDatabase* database,
-						    KRRAttribute* krrAttribute,
-						    KWObject* kwoInBody,
-						    KRRule* krrCurrentRule)
+	KRRAttribute* krrAttribute,
+	KWObject* kwoInBody,
+	KRRule* krrCurrentRule)
 {
 	require(database != NULL);
 	require(krrAttribute != NULL);
@@ -1193,9 +1193,9 @@ double KRRuleOptimizer::OptimizeContinuousAttribute(KWDatabase* database,
 }
 
 void KRRuleOptimizer::Optimize2PartsContinuousAttribute(KWDatabase* database,
-							KRRAttribute* krrAttribute,
-							KWObject* kwoInBody,
-							KRRule* krrCurrentRule)
+	KRRAttribute* krrAttribute,
+	KWObject* kwoInBody,
+	KRRule* krrCurrentRule)
 {
 	KWLoadIndex liAttributeLoadIndex;
 	Continuous cValue;
@@ -1493,9 +1493,9 @@ void KRRuleOptimizer::Optimize2PartsContinuousAttribute(KWDatabase* database,
 }
 
 void KRRuleOptimizer::Optimize3PartsContinuousAttribute(KWDatabase* database,
-							KRRAttribute* krrAttribute,
-							KWObject* kwoInBody,
-							KRRule* krrCurrentRule)
+	KRRAttribute* krrAttribute,
+	KWObject* kwoInBody,
+	KRRule* krrCurrentRule)
 {
 	KWLoadIndex liAttributeLoadIndex;
 	Continuous cValue;
@@ -1839,9 +1839,9 @@ void KRRuleOptimizer::Optimize3PartsContinuousAttribute(KWDatabase* database,
 }
 
 double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
-						KRRAttribute* krrAttribute,
-						KWObject* kwoInBody,
-						KRRule* krrCurrentRule)
+	KRRAttribute* krrAttribute,
+	KWObject* kwoInBody,
+	KRRule* krrCurrentRule)
 {
 	KWLoadIndex liAttributeLoadIndex;
 	double dMaxRuleLevel;
@@ -1962,7 +1962,7 @@ double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
 				ivTargetFrequencyValuesDiff.Initialize();
 				nRandPart = RandomInt(1);
 				if (nRandPart == 0 and svInBodyValues.GetSize() != 0)
-				// randPart = 0 -> bodypart
+					// randPart = 0 -> bodypart
 				{
 					////DDD
 					//krocCounters.ResetCounters();
@@ -1981,8 +1981,8 @@ double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
 
 					// Mise a jour du ivTargetFrequencyValuesDiff
 					for (nIndex = krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetFirstIndex();
-					     nIndex <= krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetLastIndex();
-					     nIndex++)
+						nIndex <= krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetLastIndex();
+						nIndex++)
 					{
 						//DDD
 						kwoObject = cast(KWObject*, krpsaAttribute->GetObjects()->GetAt(nIndex));
@@ -1990,8 +1990,8 @@ double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
 						require(sValue == sMovingValue);
 						//kwoObject = cast(KWObject*, oaWorkingInstances->GetAt(nIndex));
 						if (krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
-						//if ( (krrAttribute->IsInBodySymbol(sValue) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
-						//	or ((not krrAttribute->IsInBodySymbol(sValue)) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1) )
+							//if ( (krrAttribute->IsInBodySymbol(sValue) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
+							//	or ((not krrAttribute->IsInBodySymbol(sValue)) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1) )
 						{
 							if (krrCurrentRule->GetTargetType() == KWType::Symbol)
 							{
@@ -2041,8 +2041,8 @@ double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
 						ChangeValuePart(sMovingValue, krrAttribute->GetPartAt(1), krrAttribute->GetPartAt(0));
 						// Mise a jour du ivTargetFrequencyValuesDiff
 						for (nIndex = krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetFirstIndex();
-						     nIndex <= krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetLastIndex();
-						     nIndex++)
+							nIndex <= krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetLastIndex();
+							nIndex++)
 						{
 							//DDD
 							kwoObject = cast(KWObject*, krpsaAttribute->GetObjects()->GetAt(nIndex));
@@ -2050,8 +2050,8 @@ double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
 							require(sValue == sMovingValue);
 							//kwoObject = cast(KWObject*, oaWorkingInstances->GetAt(nIndex));
 							if (krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
-							//if ( (krrAttribute->IsInBodySymbol(sValue) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
-							//	or ((not krrAttribute->IsInBodySymbol(sValue)) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1) )
+								//if ( (krrAttribute->IsInBodySymbol(sValue) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
+								//	or ((not krrAttribute->IsInBodySymbol(sValue)) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1) )
 							{
 								if (krrCurrentRule->GetTargetType() == KWType::Symbol)
 								{
@@ -2098,8 +2098,8 @@ double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
 					ChangeValuePart(sMovingValue, krrAttribute->GetPartAt(1), krrAttribute->GetPartAt(0));
 					// Mise a jour du ivTargetFrequencyValuesDiff
 					for (nIndex = krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetFirstIndex();
-					     nIndex <= krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetLastIndex();
-					     nIndex++)
+						nIndex <= krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetLastIndex();
+						nIndex++)
 					{
 						//DDD
 						kwoObject = cast(KWObject*, krpsaAttribute->GetObjects()->GetAt(nIndex));
@@ -2107,8 +2107,8 @@ double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
 						require(sValue == sMovingValue);
 						//kwoObject = cast(KWObject*, oaWorkingInstances->GetAt(nIndex));
 						if (krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1)
-						//if ( (krrAttribute->IsInBodySymbol(sValue) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
-						//	or ((not krrAttribute->IsInBodySymbol(sValue)) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1) )
+							//if ( (krrAttribute->IsInBodySymbol(sValue) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
+							//	or ((not krrAttribute->IsInBodySymbol(sValue)) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1) )
 						{
 							if (krrCurrentRule->GetTargetType() == KWType::Symbol)
 							{
@@ -2156,8 +2156,8 @@ double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
 							krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetLastIndex() - krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetFirstIndex()
 							<< ")" << "-> retour\n";*/
 						for (nIndex = krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetFirstIndex();
-						     nIndex <= krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetLastIndex();
-						     nIndex++)
+							nIndex <= krpsaAttribute->LookUpPreprocessedValue(sMovingValue)->GetLastIndex();
+							nIndex++)
 						{
 							//DDD
 							kwoObject = cast(KWObject*, krpsaAttribute->GetObjects()->GetAt(nIndex));
@@ -2165,8 +2165,8 @@ double KRRuleOptimizer::OptimizeSymbolAttribute(KWDatabase* database,
 							require(sValue == sMovingValue);
 							//kwoObject = cast(KWObject*, oaWorkingInstances->GetAt(nIndex));
 							if (krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1)
-							//if ( (krrAttribute->IsInBodySymbol(sValue) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
-							//	or ((not krrAttribute->IsInBodySymbol(sValue)) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1) )
+								//if ( (krrAttribute->IsInBodySymbol(sValue) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber())
+								//	or ((not krrAttribute->IsInBodySymbol(sValue)) and krocCounters.GetBodyCountAt(kwoObject) == krrCurrentRule->GetAttributeNumber() - 1) )
 							{
 								if (krrCurrentRule->GetTargetType() == KWType::Symbol)
 								{

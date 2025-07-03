@@ -23,8 +23,8 @@ KRLearningProblem::KRLearningProblem()
 	classifierBenchmark->SetTargetAttributeType(KWType::Symbol);
 	regressorBenchmark->SetTargetAttributeType(KWType::Continuous);
 
-	// Specialisation des noms de fichier resultats en ajoutant un prefixe DT
-	analysisResults->SetResultFilesPrefix("KR_");
+	// Specialisation des noms de fichier resultats en ajoutant un prefixe KR
+	analysisResults->SetReportFileName("KR_" + analysisResults->GetReportFileName());
 }
 
 KRLearningProblem::~KRLearningProblem()
@@ -61,26 +61,11 @@ void KRLearningProblem::CollectPredictors(KWClassStats* classStats, ObjectArray*
 	// Acces a la version specialisee des specification de modelisation
 	krModelingSpec = cast(KRModelingSpec*, analysisSpec->GetModelingSpec());
 
-	// Predicteur a base de regles
-	if (krModelingSpec->GetRuleBasedPredictor())
-	{
-		predictorRule = cast(KRPredictorRule*,
-				     KWPredictor::ClonePredictor("Rule-Based", classStats->GetTargetAttributeType()));
-		if (predictorRule != NULL)
-		{
-			predictorRule->CopyFrom(krModelingSpec->GetPredictorRule());
-			oaPredictors->Add(predictorRule);
-		}
-		else
-			AddWarning("Rule-based " + KWType::GetPredictorLabel(classStats->GetTargetAttributeType()) +
-				   " is not available");
-	}
-
 	// Predicteur Bayesien Naif Selectif
 	if (krModelingSpec->GetSelectiveNaiveBayesPredictor())
 	{
 		predictorSelectiveNaiveBayes = cast(SNBPredictorSelectiveNaiveBayes*,
-						    KWPredictor::ClonePredictor("Selective Naive Bayes", classStats->GetTargetAttributeType()));
+			KWPredictor::ClonePredictor("Selective Naive Bayes", classStats->GetTargetAttributeType()));
 		if (predictorSelectiveNaiveBayes != NULL)
 		{
 			predictorSelectiveNaiveBayes->CopyFrom(krModelingSpec->GetPredictorSelectiveNaiveBayes());
@@ -88,23 +73,42 @@ void KRLearningProblem::CollectPredictors(KWClassStats* classStats, ObjectArray*
 		}
 		else
 			AddWarning("Selective naive Bayes " + KWType::GetPredictorLabel(classStats->GetTargetAttributeType()) +
-				   " is not available");
+				" is not available");
 	}
 
 	// Predicteur Bayesien Naif
 	if (krModelingSpec->GetNaiveBayesPredictor())
 	{
 		predictorNaiveBayes = cast(KWPredictorNaiveBayes*,
-					   KWPredictor::ClonePredictor("Naive Bayes", classStats->GetTargetAttributeType()));
+			KWPredictor::ClonePredictor("Naive Bayes", classStats->GetTargetAttributeType()));
 		if (predictorNaiveBayes != NULL)
 			oaPredictors->Add(predictorNaiveBayes);
 		else
 			AddWarning("Naive Bayes " + KWType::GetPredictorLabel(classStats->GetTargetAttributeType()) +
-				   " is not available");
+				" is not available");
 	}
 
-	// Appel de la methode ancetre pour completer la liste
-	KWLearningProblem::CollectPredictors(classStats, oaPredictors);
+	// Predicteur a base de regles
+	// On ajoute ce predicteur en dernier, car il fonctionne de façon atypique
+	// Les predicteurs SNB et NB se base sur un pretraitement preliminaire des variables descriptives, qu'elles exploitent
+	// ensuite en modelisation
+	// Le predicteur a base de regle cree de nouvelle variables lors de sa phase de modelisation, puis les pretraite,
+	// et enfin apprend un predicteur SNB exploitant ces nouvelles variables pretraitees.
+	// Dans son etat actuel, le code existant "perturbe" la coherence entre variable pretraitees et predicteur, ce qui
+	// impose que ce predicteur doit etre appris en dernier pour ne pas empecher l'apprentissage des autres predicteurs
+	if (krModelingSpec->GetRuleBasedPredictor())
+	{
+		predictorRule = cast(KRPredictorRule*,
+			KWPredictor::ClonePredictor("Rule-Based", classStats->GetTargetAttributeType()));
+		if (predictorRule != NULL)
+		{
+			predictorRule->CopyFrom(krModelingSpec->GetPredictorRule());
+			oaPredictors->Add(predictorRule);
+		}
+		else
+			AddWarning("Rule-based " + KWType::GetPredictorLabel(classStats->GetTargetAttributeType()) +
+				" is not available");
+	}
 }
 
 ////////////////////////////////////////////////////////////
